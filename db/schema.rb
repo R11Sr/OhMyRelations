@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_31_150406) do
+ActiveRecord::Schema.define(version: 2021_07_31_152412) do
 
   create_table "addresses", force: :cascade do |t|
     t.string "street"
@@ -116,6 +116,17 @@ ActiveRecord::Schema.define(version: 2021_07_31_150406) do
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
+  create_table "secondary_comments", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "comment_id", null: false
+    t.string "title"
+    t.text "body"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["comment_id"], name: "index_secondary_comments_on_comment_id"
+    t.index ["user_id"], name: "index_secondary_comments_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
@@ -133,4 +144,6 @@ ActiveRecord::Schema.define(version: 2021_07_31_150406) do
   add_foreign_key "lessons", "courses"
   add_foreign_key "pins", "users"
   add_foreign_key "posts", "users"
+  add_foreign_key "secondary_comments", "comments"
+  add_foreign_key "secondary_comments", "users"
 end
