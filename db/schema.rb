@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_30_152722) do
+ActiveRecord::Schema.define(version: 2021_07_31_121418) do
 
   create_table "addresses", force: :cascade do |t|
     t.string "street"
@@ -20,6 +20,31 @@ ActiveRecord::Schema.define(version: 2021_07_30_152722) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_addresses_on_user_id"
+  end
+
+  create_table "app_users", force: :cascade do |t|
+    t.string "username"
+    t.string "email"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "courses", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "demographics", force: :cascade do |t|
+    t.integer "app_user_id", null: false
+    t.string "city"
+    t.string "state"
+    t.integer "age"
+    t.integer "gender"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["app_user_id"], name: "index_demographics_on_app_user_id"
   end
 
   create_table "enrollments", force: :cascade do |t|
@@ -53,6 +78,15 @@ ActiveRecord::Schema.define(version: 2021_07_30_152722) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "lessons", force: :cascade do |t|
+    t.integer "course_id", null: false
+    t.string "title"
+    t.text "body"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["course_id"], name: "index_lessons_on_course_id"
+  end
+
   create_table "posts", force: :cascade do |t|
     t.integer "user_id", null: false
     t.text "body"
@@ -69,9 +103,11 @@ ActiveRecord::Schema.define(version: 2021_07_30_152722) do
   end
 
   add_foreign_key "addresses", "users"
+  add_foreign_key "demographics", "app_users"
   add_foreign_key "enrollments", "games"
   add_foreign_key "enrollments", "users"
   add_foreign_key "events_users", "events"
   add_foreign_key "events_users", "users"
+  add_foreign_key "lessons", "courses"
   add_foreign_key "posts", "users"
 end
