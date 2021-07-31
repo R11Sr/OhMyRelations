@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_31_152412) do
+ActiveRecord::Schema.define(version: 2021_07_31_205439) do
 
   create_table "addresses", force: :cascade do |t|
     t.string "street"
@@ -98,6 +98,21 @@ ActiveRecord::Schema.define(version: 2021_07_31_152412) do
     t.index ["course_id"], name: "index_lessons_on_course_id"
   end
 
+  create_table "organisers", force: :cascade do |t|
+    t.integer "sitter_id", null: false
+    t.integer "pet_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["pet_id"], name: "index_organisers_on_pet_id"
+    t.index ["sitter_id"], name: "index_organisers_on_sitter_id"
+  end
+
+  create_table "pets", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "pins", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "title"
@@ -127,6 +142,13 @@ ActiveRecord::Schema.define(version: 2021_07_31_152412) do
     t.index ["user_id"], name: "index_secondary_comments_on_user_id"
   end
 
+  create_table "sitters", force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
@@ -142,6 +164,8 @@ ActiveRecord::Schema.define(version: 2021_07_31_152412) do
   add_foreign_key "events_users", "events"
   add_foreign_key "events_users", "users"
   add_foreign_key "lessons", "courses"
+  add_foreign_key "organisers", "pets"
+  add_foreign_key "organisers", "sitters"
   add_foreign_key "pins", "users"
   add_foreign_key "posts", "users"
   add_foreign_key "secondary_comments", "comments"
