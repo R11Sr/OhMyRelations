@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_31_121418) do
+ActiveRecord::Schema.define(version: 2021_07_31_150406) do
 
   create_table "addresses", force: :cascade do |t|
     t.string "street"
@@ -27,6 +27,17 @@ ActiveRecord::Schema.define(version: 2021_07_31_121418) do
     t.string "email"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "pin_id", null: false
+    t.string "title"
+    t.text "body"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["pin_id"], name: "index_comments_on_pin_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "courses", force: :cascade do |t|
@@ -87,6 +98,15 @@ ActiveRecord::Schema.define(version: 2021_07_31_121418) do
     t.index ["course_id"], name: "index_lessons_on_course_id"
   end
 
+  create_table "pins", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "title"
+    t.string "image_url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_pins_on_user_id"
+  end
+
   create_table "posts", force: :cascade do |t|
     t.integer "user_id", null: false
     t.text "body"
@@ -103,11 +123,14 @@ ActiveRecord::Schema.define(version: 2021_07_31_121418) do
   end
 
   add_foreign_key "addresses", "users"
+  add_foreign_key "comments", "pins"
+  add_foreign_key "comments", "users"
   add_foreign_key "demographics", "app_users"
   add_foreign_key "enrollments", "games"
   add_foreign_key "enrollments", "users"
   add_foreign_key "events_users", "events"
   add_foreign_key "events_users", "users"
   add_foreign_key "lessons", "courses"
+  add_foreign_key "pins", "users"
   add_foreign_key "posts", "users"
 end
